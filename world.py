@@ -8,16 +8,19 @@ import collision
 
 
 class World:
-    def __init__(self,screen_length,screen_width):
+    def __init__(self,screen_length,screen_width,asymmetry=0):
         self.things = {}
         self.thing_index = 0
         self.screen_length = screen_length
         self.screen_width = screen_width
         self.background_color = (255,255,255)
+        self.asymmetry = asymmetry
         #self.mouse = Mouse()
         
-    def set_ball_list(self,n):
-        ball_count = n
+    def set_ball_list(self,n1,n2):
+        ball_count_blue = n1
+        ball_count_red = n2
+        ball_count=ball_count_red+ball_count_blue
         balls = []
         for i in range(ball_count):
             radius = 20
@@ -25,7 +28,7 @@ class World:
             y_pos = randint(0+radius,self.screen_length-radius)
             x_vel = randint(0,200)
             y_vel = randint(0,200)
-            if i<ball_count/2:
+            if i<ball_count_red:
                 color = (255, 0, 0)
             else:
                 color = (0, 0, 255)
@@ -38,7 +41,7 @@ class World:
             for j in range(i):
                 b2 = self.things[j]
                 if collision.peer_contact(b1,b2):
-                    collision.peer_collision(b1,b2)
+                    collision.peer_collision(b1,b2,asymmetry=self.asymmetry)
             collision.manage_wall_contact(b1,self.screen_width,self.screen_length)
             #if collision.mouse_contact(self.mouse,b1):
             #    collision.mouse_collision(self.mouse,b1)

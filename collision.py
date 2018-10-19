@@ -39,7 +39,7 @@ def peer_contact(obj1,obj2):
     else:
         return False
     
-def peer_collision(obj1,obj2):
+def peer_collision(obj1,obj2,asymmetry=0):
     v1 = obj1.get_velocity()
     v2 = obj2.get_velocity()
     p1 = obj1.get_position()
@@ -92,18 +92,6 @@ def peer_collision(obj1,obj2):
         obj1.update(delta_t)
         obj2.update(delta_t)
 
-        # if same color: switch color
-        # R mod 2, B mod 2 conserved
-        #if obj1.color == obj2.color:
-        #    obj1.color = (obj1.color[2], 0, obj1.color[0])
-        #    obj2.color = (obj2.color[2], 0, obj2.color[0])
-
-        # if diff color: switch color        
-        # R, B conserved
-        #if obj1.color != obj2.color:
-        #    obj1.color = (obj1.color[2], 0, obj1.color[0])
-        #    obj2.color = (obj2.color[2], 0, obj2.color[0])
-
         # if R, B collide; switch to G
         if obj1.color == (0, 0, 255) and obj2.color == (255, 0, 0):
             obj1.color = (0, 255, 0)
@@ -111,20 +99,14 @@ def peer_collision(obj1,obj2):
         elif obj1.color == (255, 0, 0) and obj2.color == (0, 0, 255):
             obj1.color = (0, 255, 0)
             obj2.color = (0, 255, 0)
-        elif obj1.color == (0, 255, 0) and obj2.color == (0, 255, 0):
+        # if G, G collide above some energy; switch to R, B
+        elif obj1.color == (0, 255, 0) and obj2.color == (0, 255, 0) and v1.get_magnitude()+v2.get_magnitude() > 100:
             obj1.color = (255, 0, 0)
             obj2.color = (0, 0, 255)
-            # 10% of the time switch both to blue
-            if random() < 0.1: 
+            # asymmetry fraction of the time switch both to blue
+            if random() < asymmetry: 
                 obj1.color = (0, 0, 255)
 
-
-
-        #if diff color: switch to blue
-        # B grows
-        #if obj1.color != obj2.color:
-        #    obj1.color = (0, 0, 255)
-        #    obj2.color = (0, 0, 255)
 
 def mouse_contact(mouse,obj):
     distance = ((obj.position.x - mouse.px)**2 + (obj.position.y - mouse.py)**2)**(1/2)
