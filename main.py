@@ -6,9 +6,9 @@ from random import *
 import math
 import time
 
-SCREEN_LENGTH = 580
-SCREEN_WIDTH = 840
-NUMBER_OF_BALLS = 10
+SCREEN_LENGTH = 800
+SCREEN_WIDTH = 1000
+NUMBER_OF_BALLS = 20
 
 def main():
     pygame.init()

@@ -1,5 +1,6 @@
 from vector import Vector2
 import math
+from random import random
 
 def dot_product(v1,v2):
     return v1.x*v2.x + v1.y*v2.y
@@ -90,6 +91,40 @@ def peer_collision(obj1,obj2):
             delta_t = solutions[1]
         obj1.update(delta_t)
         obj2.update(delta_t)
+
+        # if same color: switch color
+        # R mod 2, B mod 2 conserved
+        #if obj1.color == obj2.color:
+        #    obj1.color = (obj1.color[2], 0, obj1.color[0])
+        #    obj2.color = (obj2.color[2], 0, obj2.color[0])
+
+        # if diff color: switch color        
+        # R, B conserved
+        #if obj1.color != obj2.color:
+        #    obj1.color = (obj1.color[2], 0, obj1.color[0])
+        #    obj2.color = (obj2.color[2], 0, obj2.color[0])
+
+        # if R, B collide; switch to G
+        if obj1.color == (0, 0, 255) and obj2.color == (255, 0, 0):
+            obj1.color = (0, 255, 0)
+            obj2.color = (0, 255, 0)
+        elif obj1.color == (255, 0, 0) and obj2.color == (0, 0, 255):
+            obj1.color = (0, 255, 0)
+            obj2.color = (0, 255, 0)
+        elif obj1.color == (0, 255, 0) and obj2.color == (0, 255, 0):
+            obj1.color = (255, 0, 0)
+            obj2.color = (0, 0, 255)
+            # 10% of the time switch both to blue
+            if random() < 0.1: 
+                obj1.color = (0, 0, 255)
+
+
+
+        #if diff color: switch to blue
+        # B grows
+        #if obj1.color != obj2.color:
+        #    obj1.color = (0, 0, 255)
+        #    obj2.color = (0, 0, 255)
 
 def mouse_contact(mouse,obj):
     distance = ((obj.position.x - mouse.px)**2 + (obj.position.y - mouse.py)**2)**(1/2)

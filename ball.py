@@ -11,7 +11,7 @@ class Ball:
         self.radius = radius
         self.mass = math.pi*(self.radius**2)
         self.color = color
-        self.dampening = .999
+        self.dampening = 1 #.999
 
     def set_velocity(self,new_velocity):
         self.velocity = new_velocity
